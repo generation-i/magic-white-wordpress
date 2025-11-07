@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
 
     <style>
         body {
@@ -155,39 +153,136 @@
 
     <!-- Individual Team Section -->
     <!-- Individual Team Section -->
-<section class="py-16 px-4 sm:px-10 md:px-16" id="team-section">
-    <div class="w-auto sm:w-full px-2 lg:px-20 xl:px-60">
-        <?php
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'team_members';
-        $members = $wpdb->get_results("SELECT * FROM $table_name ORDER BY COALESCE(display_order, 9999), id ASC");
+    <section class="py-16 px-4 sm:px-10 md:px-16" id="team-section">
+        <div class="w-auto sm:w-full px-2 lg:px-20 xl:px-60">
+            <!-- Person 1 -->
+            <div class="w-full pt-10 flex flex-col sm:flex-row gap-6 sm:gap-10 items-center">
+                <div class="relative flex justify-center sm:w-2/5">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/png-team/gopi-image.png" alt="Person 1"
+                        class="relative w-48 sm:w-56 md:w-60 z-10 object-contain temp-green-bg">
+                    <!-- <img src="/png-team/base.png" alt="Circle"
+                        class="absolute bottom-0  w-[20rem] sm:w-[16.30rem] md:w-70 object-contain"> -->
+                </div>
+                <div class="text-left flex flex-col justify-center mt-16 sm:mt-0 sm:w-3/5">
+                    <h2 class="text-md sm:text-xl font-bold text-[#595959] uppercase">GOPI PRASANNAA </h2>
+                    <p class="text-xs sm:text-base text-[#a8a8a8] uppercase mb-5">FOUNDER/CEO</p>
 
-        if ($members):
-            $i = 0;
-            foreach ($members as $member):
-                $i++;
-                $reverse = ($i % 2 == 0) ? 'sm:flex-row-reverse' : 'sm:flex-row';
-        ?>
-        <div class="w-full pt-24 sm:pt-<?= $i == 1 ? '10' : '32' ?> flex flex-col <?= $reverse ?> gap-6 sm:gap-10 items-center">
-            <div class="relative flex justify-center sm:w-2/5">
-                <img src="<?php echo esc_url($member->image_url); ?>" alt="<?php echo esc_attr($member->name); ?>"
-                    class="relative w-48 sm:w-56 md:w-60 z-10 object-contain temp-green-bg">
+                    <p class="text-[15px] mt-2">
+                        Gopi is a rare jack-of-all-trades and master of them all. As creator, innovator, developer,
+                        artist, designer, and sculptor; he can whip up a print ad, develop a game, create an animated
+                        character, design a movie poster, redo your living room, or paint you a picture. CNN dubbed him
+                        a 21st Century Visionary when his brainchild, the iBangle, won Best Product of the Year 2008.
+                        <br />
+                        <br />
+                        Today, he is a prolific publicity designer; having designed posters across Hindi, Telegu, Tamil,
+                        Kannada and Malayalam cinema. Gopi’s foray into the production design space kicked off with the
+                        Amazon Prime’s Modern Love Chennai, an anthology of six films with six unique geographies,
+                        colours and architectural styles. He next brought his vision to an AR Rehman-Dhee music album
+                        (Yennai Izhukkuthadi), where he designed a visually striking, stylized set that brought the
+                        music’s mood to life.
+                        <br />
+                        <br />
+                        At the heart of it all, he is a reticent artist who firmly believes that it is art that speaks
+                        where words fail.
+                    </p>
+                </div>
             </div>
-            <div class="text-left flex flex-col justify-center mt-16 sm:mt-0 sm:w-3/5">
-                <h2 class="text-md sm:text-xl font-bold text-[#595959] uppercase"><?php echo esc_html($member->name); ?></h2>
-                <p class="text-xs sm:text-base text-[#a8a8a8] uppercase mb-5"><?php echo esc_html($member->designation); ?></p>
-        <p class="text-[15px] mt-2 break-words">
-    <?php echo nl2br(esc_html($member->description)); ?>
-</p>
+
+            <!-- Person 2 -->
+            <div class="w-full pt-24 sm:pt-20 flex flex-col sm:flex-row-reverse gap-6 sm:gap-10 items-center">
+                <div class="relative flex justify-center sm:w-2/5">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/png-team/uday-image.png" alt="Person 2"
+                        class="relative w-48 sm:w-56 md:w-60 z-10 object-contain temp-green-bg">
+                    <!-- <img src="/png-team/base.png" alt="Circle"
+                        class="absolute bottom-0  w-48 sm:w-56 md:w-60 object-contain"> -->
+                </div>
+                <div class="text-left flex flex-col justify-center mt-16 sm:mt-0 sm:w-3/5">
+                    <h2 class="text-md sm:text-xl font-bold text-[#595959] uppercase">S V UDAYAKUMAR</h2>
+                    <p class="text-xs sm:text-base text-[#a8a8a8] uppercase mb-5">CREATIVE DIRECTOR</p>
+                    <p class="text-[15px] mt-2">
+                        Udaya Kumar is a design leader with over a decade of experience in brand, film, and spatial
+                        design. A graduate in Sculpture from the Government College of Fine Arts, Chennai, he has led
+                        creative direction for 100+ film publicity projects and numerous brand campaigns. As Creative
+                        Director at Gopi Prasannaa Studio, he has shaped the visual language of major films and
+                        collaborated with leading brands like Alamara Films and AGNO3 on campaigns for brands like DELL,
+                        Flying Machine, McDowell’s, and the Murugappa Group.
+                        <br />
+                        <br />
+                        His design journey spans art direction, animation, and spatial concepts, with early experience
+                        assisting on interior design projects across India. Udaya’s expertise in stop-motion animation
+                        and visual storytelling has also contributed to ad campaigns such as the Stayzilla commercial
+                        directed by Thiagarajan Kumararaja. With a foundation in fine arts and hands-on experience
+                        across mediums, he continues to lead teams and deliver impactful visual solutions across
+                        industries.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Person 3 -->
+            <div class="w-full pt-24 sm:pt-32 flex flex-col sm:flex-row gap-6 sm:gap-10 items-center">
+                <div class="relative flex justify-center sm:w-2/5">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/png-team/vaasan-image.png" alt="Person 3"
+                        class="relative w-48 sm:w-56 md:w-60 z-10 object-contain temp-green-bg">
+                    <!-- <img src="/png-team/base.png" alt="Circle"
+                        class="absolute bottom-0  w-48 sm:w-56 md:w-60 object-contain"> -->
+                </div>
+                <div class="text-left flex flex-col justify-center mt-16 sm:mt-0 sm:w-3/5">
+                    <h2 class="text-md sm:text-xl font-bold text-[#595959] uppercase">Vasan S</h2>
+                    <p class="text-xs sm:text-base text-[#a8a8a8] uppercase mb-5">VP - Technology</p>
+                    <p class="text-[15px] mt-2">
+                        Vasan S is an accomplished entrepreneur with a strong foundation in computer science, holding a
+                        degree from IIT Madras. With early career stints at NYSE and Enguage in Atlanta, he returned to
+                        India to pursue his entrepreneurial ambitions in the tech and product innovation space.
+                        <br />
+                        <br />
+                        He is the founder of 1000 Lookz, a pioneering virtual makeover platform that enables users to
+                        preview cosmetics, hair colour, and eyewear using real-time imaging — a first-of-its-kind in
+                        India. The platform has collaborated with over 40 leading brands and e-commerce companies, and
+                        was part of the Microsoft Accelerator program.
+                        <br />
+                        <br />
+                        Vasan has filed 18 patents and has been widely recognised for his innovation. His accolades
+                        include the CII Emerging Entrepreneur of the Year (2016), NASSCOM Top 10 Product Companies
+                        (2015), and multiple honours from Microsoft, IAMAI, and Indira International.
+                        <br />
+                        <br />
+                        Vasan continues to focus on deep tech products that blend AI, retail, and user experience in
+                        impactful ways.
+
+                    </p>
+                </div>
+            </div>
+
+            <!-- Person 4 -->
+            <div class="w-full pt-24 sm:pt-32 flex flex-col sm:flex-row-reverse gap-6 sm:gap-10 items-center">
+                <div class="relative flex justify-center sm:w-2/5">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/png-team/vinoth-image.png" alt="Person 4"
+                        class="relative w-48 sm:w-56 md:w-60 z-10 object-contain temp-green-bg">
+                    <!-- <img src="/png-team/base.png" alt="Circle"
+                        class="absolute bottom-0  w-48 sm:w-56 md:w-60 object-contain"> -->
+                </div>
+                <div class="text-left flex flex-col justify-center mt-16 sm:mt-0 sm:w-3/5">
+                    <h2 class="text-md sm:text-xl font-bold text-[#595959] uppercase">VINOTH C</h2>
+                    <p class="text-xs sm:text-base text-[#a8a8a8] uppercase mb-5">chief photographer</p>
+                    <p class="text-[15px] mt-2">
+                        Vinoth Chandrasekaran lives and breathes photography. After graduating from college, he honed
+                        his craft under the mentorship of Sharad Haksar, one of India’s most awarded advertising
+                        photographers. His decade-long stint at Eyelight Pictures was a deep dive into the fundamentals
+                        of photography — mastering lighting, composition, point of view, and post-production with an
+                        artist’s eye and an advertiser’s precision.
+                        <br />
+                        <br />
+                        As a core contributor to One Eyeland, Vinoth had the opportunity to study the works of
+                        world-renowned photographers. Vinoth’s signature style combines technical precision with
+                        creative originality. His work has earned international recognition, including awards and
+                        honourable mentions. Today, he brings that same blend of insight, craft, and creativity to every
+                        project he undertakes.
+
+                    </p>
+                </div>
             </div>
         </div>
-        <?php
-            endforeach;
-        endif;
-        ?>
-    </div>
-</section>
-
+    </section>
 
 
 

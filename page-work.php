@@ -9,18 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="icon" type="image/x-icon" href="<?php echo get_template_directory_uri(); ?>/assets/images/32x32.ico">
-    <!-- PNG icons for modern browsers -->
-    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo get_template_directory_uri(); ?>/assets/images/32x32.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo get_template_directory_uri(); ?>/assets/images/16x16.ico">
-
-    <!-- Apple devices (iPhone, iPad) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo get_template_directory_uri(); ?>/assets/images/180x180.ico">
-
-    <!-- Android/Chrome icon -->
-    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo get_template_directory_uri(); ?>/assets/images/192x192.ico">
-
 
     <style>
         html {
@@ -313,9 +301,9 @@
     <!-- Tabs -->
     <div class="mt-8 mb-8 px-4 py-3 flex justify-center">
         <div class="flex items-center space-x-4 overflow-x-auto whitespace-nowrap scroll-smooth hide-scrollbar">
-            <!-- <span class="flex items-center flex-shrink-0 font-semibold text-blue-600">
+            <span class="flex items-center flex-shrink-0 font-semibold text-blue-600">
                 Work <span class="mx-2 w-12 border-t border-black"></span>
-            </span> -->
+            </span>
             <?php foreach ($terms as $index => $term): ?>
                 <button class="tab-item custom-underline <?php echo $index === 0 ? 'text-black' : 'text-gray-400'; ?> flex-shrink-0 cursor-pointer pb-0"
                     data-tab="<?php echo esc_attr($term->slug); ?>" data-page="1">
@@ -421,13 +409,11 @@
 
                             if ($item['type'] === 'image') {
                                 $gallery_urls[] = [
-                                    'id'   => $post_id,
                                     'type' => 'image',
                                     'src'  => wp_get_attachment_url($item['id'])
                                 ];
                             } elseif ($item['type'] === 'video') {
                                 $gallery_urls[] = [
-                                    'id'     => $post_id,
                                     'type'   => 'video',
                                     'src'    => wp_get_attachment_url($item['id']),
                                     'thumb'  => !empty($item['thumb']) ? wp_get_attachment_url($item['thumb']) : ''
@@ -461,7 +447,7 @@
                             <?php if ($video_url): ?>
                                 <video
                                     class="w-full h-full object-contain filter grayscale hover:grayscale-0 transition duration-300 cursor-pointer"
-                                    onclick="openWorkModal(event, '<?php echo esc_js($post_id); ?>')"
+                                    onclick="openFullscreenImage('<?php echo esc_url($image_url); ?>')"
                                     poster=" <?php echo esc_url($video_thumb ?: $image_url); ?>"
                                     muted preload="none">
                                     <source src="<?php echo esc_url($video_url); ?>" type="video/mp4">
@@ -469,9 +455,7 @@
                             <?php elseif ($image_url): ?>
                                 <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($heading); ?>"
                                     class="w-full h-full object-contain filter grayscale hover:grayscale-0 transition duration-300 cursor-pointer"
-                                    onclick="openWorkModal(event, '<?php echo esc_js($post_id); ?>')"
-                                    poster=" <?php echo esc_url($video_thumb ?: $image_url); ?>">
-
+                                    onclick="openFullscreenImage('<?php echo esc_url($image_url); ?>')">
                             <?php endif; ?>
                         </div>
                     <?php else: ?>

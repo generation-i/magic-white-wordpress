@@ -405,121 +405,38 @@ add_action('admin_notices', 'testimonial_admin_notices');
 
 //work-pages
 
-function register_work_post_type() {
-
-    $labels = array(
-        'name'                  => _x('Works', 'Post Type General Name', 'textdomain'),
-        'singular_name'         => _x('Work', 'Post Type Singular Name', 'textdomain'),
-        'menu_name'             => __('Works', 'textdomain'),
-        'name_admin_bar'        => __('Work', 'textdomain'),
-        'add_new'               => __('Add New', 'textdomain'),
-        'add_new_item'          => __('Add New Work', 'textdomain'),
-        'edit_item'             => __('Edit Work', 'textdomain'),
-        'new_item'              => __('New Work', 'textdomain'),
-        'view_item'             => __('View Work', 'textdomain'),
-        'all_items'             => __('All Works', 'textdomain'),
-        'search_items'          => __('Search Works', 'textdomain'),
-        'not_found'             => __('No works found', 'textdomain'),
-        'not_found_in_trash'    => __('No works found in Trash', 'textdomain'),
-    );
-
-    $args = array(
-        'label'                 => __('Work', 'textdomain'),
-        'description'           => __('Portfolio or Work items', 'textdomain'),
-        'labels'                => $labels,
-        'supports'              => array('title', 'editor', 'thumbnail', 'excerpt'),
-        'taxonomies'            => array('work_category'),
-        'public'                => true,
-        'show_ui'               => true,
-        'show_in_menu'          => true,
-        'menu_icon'             => 'dashicons-portfolio',
-        'show_in_admin_bar'     => true,
-        'show_in_nav_menus'     => true,
-        'can_export'            => true,
-        'has_archive'           => true,
-        'hierarchical'          => false,
-        'exclude_from_search'   => false,
-        'publicly_queryable'    => true,
-        'rewrite'               => array('slug' => 'work'),
-        'capability_type'       => 'post',
-        'show_in_rest'          => true,
-    );
-
-    register_post_type('work', $args);
+function register_work_post_type()
+{
+    register_post_type('work', [
+        'labels' => [
+            'name'          => 'Works',
+            'singular_name' => 'Work',
+            'add_new_item'  => 'Add New Work',
+            'edit_item'     => 'Edit Work',
+        ],
+        'public'       => true,
+        'has_archive'  => false,
+        'supports'     => ['title'],
+        'menu_icon'    => 'dashicons-portfolio',
+        'show_in_rest' => true,
+    ]);
 }
 add_action('init', 'register_work_post_type');
 
 // ===============================
 // 2. Register Taxonomy
 // ===============================
-function register_work_category_taxonomy() {
-
-    $labels = array(
-        'name'              => _x('Work Categories', 'taxonomy general name', 'textdomain'),
-        'singular_name'     => _x('Work Category', 'taxonomy singular name', 'textdomain'),
-        'search_items'      => __('Search Work Categories', 'textdomain'),
-        'all_items'         => __('All Work Categories', 'textdomain'),
-        'parent_item'       => __('Parent Category', 'textdomain'),
-        'parent_item_colon' => __('Parent Category:', 'textdomain'),
-        'edit_item'         => __('Edit Work Category', 'textdomain'),
-        'update_item'       => __('Update Work Category', 'textdomain'),
-        'add_new_item'      => __('Add New Work Category', 'textdomain'),
-        'new_item_name'     => __('New Work Category Name', 'textdomain'),
-        'menu_name'         => __('Work Categories', 'textdomain'),
-    );
-
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-        'rewrite'           => array('slug' => 'work-category'),
-        'show_in_rest'      => true,
-    );
-
-    register_taxonomy('work_category', array('work'), $args);
+function register_work_taxonomy()
+{
+    register_taxonomy('work_category', 'work', [
+        'label'        => 'Work Categories',
+        'hierarchical' => true,
+        'public'       => true,
+        'rewrite'      => ['slug' => 'work-category'],
+        'show_in_rest' => true,
+    ]);
 }
-add_action('init', 'register_work_category_taxonomy');
-
-
-// ------------------------------
-// 3️⃣ Add Work Category Filter in Admin List
-// ------------------------------
-function add_work_category_filter_to_admin($post_type) {
-    if ($post_type === 'work') {
-        $taxonomy = 'work_category';
-        $taxonomy_obj = get_taxonomy($taxonomy);
-        $selected = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
-        wp_dropdown_categories(array(
-            'show_option_all' => __('All ' . $taxonomy_obj->label, 'textdomain'),
-            'taxonomy'        => $taxonomy,
-            'name'            => $taxonomy,
-            'orderby'         => 'name',
-            'selected'        => $selected,
-            'show_count'      => true,
-            'hide_empty'      => false,
-        ));
-    }
-}
-add_action('restrict_manage_posts', 'add_work_category_filter_to_admin');
-
-
-// ------------------------------
-// 4️⃣ Adjust Query to Apply Filter
-// ------------------------------
-function filter_works_by_work_category($query) {
-    global $pagenow;
-    $post_type = isset($_GET['post_type']) ? $_GET['post_type'] : '';
-
-    if ($pagenow == 'edit.php' && $post_type == 'work' && isset($_GET['work_category']) && $_GET['work_category'] != '') {
-        $term = get_term_by('id', $_GET['work_category'], 'work_category');
-        if ($term) {
-            $query->query_vars['work_category'] = $term->slug;
-        }
-    }
-}
-add_filter('parse_query', 'filter_works_by_work_category');
+add_action('init', 'register_work_taxonomy');
 
 // ===============================
 // 3. Enqueue Admin Scripts
@@ -1246,186 +1163,3 @@ function save_banner_meta($post_id)
     update_post_meta($post_id, 'banner_order', intval($_POST['banner_order']));
 }
 add_action('save_post', 'save_banner_meta');
-
-
-// team-members
-
-
-function create_team_members_table() {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'team_members';
-    $charset_collate = $wpdb->get_charset_collate();
-
-    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        name varchar(255) NOT NULL,
-        designation varchar(255) NOT NULL,
-        description text NOT NULL,
-        image_url varchar(255) NOT NULL,
-        display_order int(11) DEFAULT NULL,
-        PRIMARY KEY (id)
-    ) $charset_collate;";
-
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
-}
-add_action('admin_init', 'create_team_members_table'); // ensures table exists
-
-// Enqueue Media Uploader
-add_action('admin_enqueue_scripts', function($hook){
-    if ($hook !== 'toplevel_page_team-members') return;
-    wp_enqueue_media();
-    wp_enqueue_script('jquery');
-});
-
-// Add Admin Menu
-add_action('admin_menu', function() {
-    add_menu_page('Team Members', 'Team Members', 'manage_options', 'team-members', 'team_members_page', 'dashicons-groups', 20);
-});
-
-// Admin Page
-function team_members_page() {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'team_members';
-
-    // Handle Form Submit
-    if (isset($_POST['save_team_member'])) {
-        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-        $name = sanitize_text_field($_POST['name']);
-        $designation = sanitize_text_field($_POST['designation']);
-        $description = sanitize_textarea_field($_POST['description']);
-        $image_url = esc_url_raw($_POST['image_url']);
-        $display_order = !empty($_POST['display_order']) ? intval($_POST['display_order']) : null;
-
-        if (empty($name) || empty($designation) || empty($description) || empty($image_url)) {
-            echo '<div class="notice notice-error"><p><strong>Error:</strong> Name, Designation, Description, and Image are required.</p></div>';
-        } else {
-            if ($id) {
-                $wpdb->update($table_name, [
-                    'name' => $name,
-                    'designation' => $designation,
-                    'description' => $description,
-                    'image_url' => $image_url,
-                    'display_order' => $display_order
-                ], ['id' => $id]);
-                echo '<div class="notice notice-success"><p>Team Member Updated Successfully.</p></div>';
-            } else {
-                $wpdb->insert($table_name, [
-                    'name' => $name,
-                    'designation' => $designation,
-                    'description' => $description,
-                    'image_url' => $image_url,
-                    'display_order' => $display_order
-                ]);
-                echo '<div class="notice notice-success"><p>Team Member Added Successfully.</p></div>';
-            }
-        }
-    }
-
-    // Handle Delete
-    if (isset($_GET['delete'])) {
-        $wpdb->delete($table_name, ['id' => intval($_GET['delete'])]);
-        echo '<div class="notice notice-success"><p>Team Member Deleted Successfully.</p></div>';
-    }
-
-    // Edit Member
-    $edit_member = null;
-    if (isset($_GET['edit'])) {
-        $edit_member = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", intval($_GET['edit'])));
-    }
-
-    // Fetch Members
-    $members = $wpdb->get_results("SELECT * FROM $table_name ORDER BY COALESCE(display_order, 9999), id DESC");
-
-    ?>
-    <div class="wrap">
-        <h1>Team Members</h1>
-
-        <form method="post" style="background:#fff;padding:15px;border:1px solid #ddd;margin-bottom:25px;">
-            <input type="hidden" name="id" value="<?php echo esc_attr($edit_member->id ?? ''); ?>">
-
-            <table class="form-table">
-                <tr>
-                    <th>Name *</th>
-                    <td><input type="text" name="name" required value="<?php echo esc_attr($edit_member->name ?? ''); ?>" class="regular-text"></td>
-                </tr>
-                <tr>
-                    <th>Designation *</th>
-                    <td><input type="text" name="designation" required value="<?php echo esc_attr($edit_member->designation ?? ''); ?>" class="regular-text"></td>
-                </tr>
-                <tr>
-                    <th>Description *</th>
-                    <td><textarea name="description" rows="4" required class="large-text"><?php echo esc_textarea($edit_member->description ?? ''); ?></textarea></td>
-                </tr>
-                <tr>
-                    <th>Image *</th>
-                    <td>
-                        <input type="text" name="image_url" id="image_url" value="<?php echo esc_attr($edit_member->image_url ?? ''); ?>" required class="regular-text">
-                        <input type="button" class="button" id="upload_image_button" value="Upload Image">
-                        <?php if (!empty($edit_member->image_url)): ?>
-                            <br><img src="<?php echo esc_url($edit_member->image_url); ?>" style="max-width:150px;margin-top:10px;">
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Display Order</th>
-                    <td><input type="number" name="display_order" value="<?php echo esc_attr($edit_member->display_order ?? ''); ?>" class="small-text"></td>
-                </tr>
-            </table>
-
-            <?php submit_button($edit_member ? 'Update Member' : 'Add Member', 'primary', 'save_team_member'); ?>
-        </form>
-
-        <!-- Members List -->
-        <h2>Team Members List</h2>
-        <table class="widefat striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Designation</th>
-                    <th>Image</th>
-                    <th>Order</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($members): foreach ($members as $m): ?>
-                    <tr>
-                        <td><?php echo esc_html($m->id); ?></td>
-                        <td><?php echo esc_html($m->name); ?></td>
-                        <td><?php echo esc_html($m->designation); ?></td>
-                        <td><img src="<?php echo esc_url($m->image_url); ?>" style="max-width:80px;"></td>
-                        <td><?php echo esc_html($m->display_order ?? '-'); ?></td>
-                        <td>
-                            <a href="?page=team-members&edit=<?php echo $m->id; ?>" class="button">Edit</a>
-                            <a href="?page=team-members&delete=<?php echo $m->id; ?>" class="button" onclick="return confirm('Delete this member?');">Delete</a>
-                        </td>
-                    </tr>
-                <?php endforeach; else: ?>
-                    <tr><td colspan="6">No members found.</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <script>
-    jQuery(document).ready(function($){
-        $('#upload_image_button').click(function(e){
-            e.preventDefault();
-            var frame = wp.media({
-                title: 'Select or Upload Team Image',
-                button: { text: 'Use this image' },
-                multiple: false
-            });
-            frame.on('select', function(){
-                var attachment = frame.state().get('selection').first().toJSON();
-                $('#image_url').val(attachment.url);
-            });
-            frame.open();
-        });
-    });
-    </script>
-
-    <?php
-}

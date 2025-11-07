@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.6.1/video-js.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style>
         @font-face {
@@ -458,8 +457,6 @@
         .banner-slide[data-type="video"] video.loading {
             opacity: 0.5;
         }
-
-        
     </style>
 </head>
 
@@ -622,9 +619,9 @@
                         </div>
 
                     <?php elseif ($slide['type'] === 'image'): ?>
-                        <img class="w-full h-full object-cover" src="<?php echo esc_url($slide['url']); ?>"
+                        <img src="<?php echo esc_url($slide['url']); ?>"
                             alt="<?php echo esc_attr($slide['title']); ?>"
-                            class="w-full h-full"
+                            class="w-full h-full object-cover"
                             loading="lazy">
                         <div class="absolute inset-0"></div> <!-- optional overlay -->
 
@@ -922,7 +919,9 @@
     </section>
 
     <!--carousel slider-->
-    <section id="carousel-section" class="min-h-screen h-auto flex flex-col">
+
+    <section id="carousel-section" class="min-h-screen-rm h-auto flex flex-col">
+<!--
         <div
             class="h-[100dvh] sm:h-[60dvh] md:h-[50dvh] lg:h-[60dvh] relative overflow-hidden bg-[#ffd527] testimonial-section">
             <div class="swiper mySwiper h-full">
@@ -1006,6 +1005,8 @@
 
             </div>
         </div>
+-->
+ 
         <div
             class="bg-white relative w-full flex items-center justify-center overflow-hidden h-[40dvh] hidden sm:flex game-section">
             <div class="absolute bottom-5">
